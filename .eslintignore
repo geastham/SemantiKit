@@ -1,0 +1,11 @@
+dist
+build
+coverage
+.turbo
+node_modules
+*.config.js
+.docusaurus
+storybook-static
+.next
+out
+

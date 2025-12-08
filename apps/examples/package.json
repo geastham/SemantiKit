@@ -1,0 +1,13 @@
+{
+  "name": "@semantikit/examples",
+  "version": "0.1.0-alpha.1",
+  "private": true,
+  "description": "Example applications built with SemantiKit",
+  "scripts": {
+    "dev": "echo 'Example apps will be added in Phase 3'",
+    "build": "echo 'Example apps will be added in Phase 3'",
+    "typecheck": "echo 'Example apps will be added in Phase 3'",
+    "clean": "rm -rf dist"
+  }
+}
+
