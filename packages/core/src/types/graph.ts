@@ -91,10 +91,11 @@ export interface GraphMetadata {
  * Complete knowledge graph data structure
  *
  * Contains nodes, edges, optional schema, and metadata.
+ * This is a plain data interface used for serialization.
  *
  * @example
  * ```typescript
- * const graph: KnowledgeGraph = {
+ * const graphData: KnowledgeGraphData = {
  *   nodes: [
  *     { id: '1', type: 'Person', label: 'Alice', position: { x: 0, y: 0 } },
  *     { id: '2', type: 'Company', label: 'Acme Corp', position: { x: 200, y: 0 } }
@@ -110,7 +111,7 @@ export interface GraphMetadata {
  * };
  * ```
  */
-export interface KnowledgeGraph {
+export interface KnowledgeGraphData {
   /**
    * Array of nodes in the graph
    */
@@ -276,4 +277,3 @@ export interface NeighborResult {
    */
   distances?: Record<string, number>;
 }
-

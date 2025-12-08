@@ -40,7 +40,7 @@ export type {
 
 // Graph types
 export type {
-  KnowledgeGraph,
+  KnowledgeGraphData,
   GraphStatistics,
   GraphMetadata,
   SerializationOptions,
@@ -68,4 +68,3 @@ export type {
   OperationEvent,
   OperationCallback,
 } from './operations';
-
