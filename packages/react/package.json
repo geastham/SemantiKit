@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --external react --external react-dom --external reactflow",
+    "build": "tsup src/index.ts --format cjs,esm --external react --external react-dom --external reactflow",
     "dev": "tsup src/index.ts --format cjs,esm --dts --external react --external react-dom --external reactflow --watch",
     "lint": "eslint src/**/*.{ts,tsx}",
     "typecheck": "tsc --noEmit",
@@ -39,7 +39,9 @@
     "reactflow": "^11.0.0"
   },
   "dependencies": {
-    "@semantikit/core": "workspace:*"
+    "@semantikit/core": "workspace:*",
+    "@semantikit/validators": "workspace:*",
+    "@semantikit/layouts": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.0",
@@ -60,4 +62,3 @@
     "access": "public"
   }
 }
-
