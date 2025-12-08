@@ -1,0 +1,43 @@
+.features {
+  padding: 4rem 0;
+  width: 100%;
+}
+
+.featureIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.features h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-color-primary);
+}
+
+.features p {
+  color: var(--ifm-color-emphasis-700);
+  line-height: 1.6;
+}
+
+.features .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 0;
+}
+
+.features .col {
+  padding: 0 1rem;
+}
+
+@media screen and (max-width: 996px) {
+  .features .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
