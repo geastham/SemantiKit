@@ -1,0 +1,101 @@
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.quickStart {
+  padding: 4rem 0;
+  background: var(--ifm-background-surface-color);
+}
+
+.quickStart h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+.codeBlock {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.codeBlock pre {
+  margin: 0;
+  background: transparent;
+}
+
+.codeBlock code {
+  background: transparent;
+  color: var(--ifm-color-content);
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.exampleUsage {
+  padding: 4rem 0;
+}
+
+.exampleUsage h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+.codeExample {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.codeExample pre {
+  margin: 0;
+  background: transparent;
+}
+
+.codeExample code {
+  background: transparent;
+  color: var(--ifm-color-content);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.cta {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-dark) 100%);
+  color: white;
+}
+
+.cta h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
