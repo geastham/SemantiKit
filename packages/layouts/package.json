@@ -16,7 +16,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsup src/index.ts --format cjs,esm",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "lint": "eslint src/**/*.ts",
     "typecheck": "tsc --noEmit",
@@ -34,7 +34,8 @@
   "license": "MIT",
   "dependencies": {
     "@semantikit/core": "workspace:*",
-    "elkjs": "^0.9.0"
+    "elkjs": "^0.9.0",
+    "d3-force": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
@@ -47,4 +48,3 @@
     "access": "public"
   }
 }
-
