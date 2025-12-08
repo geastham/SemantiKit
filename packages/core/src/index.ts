@@ -11,6 +11,8 @@
 // Export all types
 export * from './types';
 
+// Export graph classes
+export * from './graph';
+
 // Version
 export const VERSION = '0.1.0-alpha.1';
-
