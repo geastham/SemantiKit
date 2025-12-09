@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useDocumentStore } from '@/lib/document-store';
 import { DocumentList } from '@/components/documents/DocumentList';
+import { DocumentFilters } from '@/components/documents/DocumentFilters';
 import { EntityList } from '@/components/entities/EntityList';
+import { EntityFilters } from '@/components/entities/EntityFilters';
 import { 
   FileText, 
   Users, 
@@ -11,7 +13,8 @@ import {
   Grid3x3, 
   List,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Filter
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -177,6 +180,17 @@ export default function DocumentCuratorPage() {
             </div>
             <div className="flex-1 overflow-auto p-4">
               <div className="space-y-4">
+                {/* Filters */}
+                <div className="rounded-lg border p-4 bg-background">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Filter className="h-4 w-4" />
+                    <h3 className="font-medium">Filters</h3>
+                  </div>
+                  {activeTab === 'documents' && <DocumentFilters />}
+                  {activeTab === 'entities' && <EntityFilters />}
+                </div>
+
+                {/* Quick Stats */}
                 <div className="rounded-lg border p-4 bg-background">
                   <h3 className="font-medium mb-2">Quick Stats</h3>
                   <div className="space-y-2 text-sm">
@@ -201,16 +215,13 @@ export default function DocumentCuratorPage() {
                   </div>
                 </div>
 
+                {/* Implementation Status */}
                 <div className="rounded-lg border p-4 bg-background">
                   <h3 className="font-medium mb-2">Implementation Status</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2 text-green-600">
                       <div className="h-2 w-2 rounded-full bg-green-600" />
-                      <span>Phase 1-3: Complete</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-blue-600">
-                      <div className="h-2 w-2 rounded-full bg-blue-600" />
-                      <span>Phase 4: In Progress</span>
+                      <span>Phase 1-4: Complete</span>
                     </div>
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <div className="h-2 w-2 rounded-full bg-muted" />
