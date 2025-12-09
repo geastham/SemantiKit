@@ -1,0 +1,86 @@
+# Custom Ontology Template
+# A minimal starting point for building your own ontology
+
+name: "Custom Ontology"
+version: "1.0.0"
+description: "A simple ontology with Person and Organization entities"
+namespace: "http://example.org/ontology#"
+
+nodeTypes:
+  Person:
+    label: "Person"
+    description: "An individual human being"
+    color: "#3b82f6"
+    icon: "user"
+    properties:
+      name:
+        type: string
+        required: true
+        description: "Full name of the person"
+      email:
+        type: email
+        description: "Email address"
+      age:
+        type: number
+        min: 0
+        max: 150
+      bio:
+        type: string
+        description: "Short biography"
+
+  Organization:
+    label: "Organization"
+    description: "A group or company"
+    color: "#8b5cf6"
+    icon: "building"
+    properties:
+      name:
+        type: string
+        required: true
+        description: "Organization name"
+      website:
+        type: url
+        description: "Official website"
+      founded:
+        type: date
+        description: "Date founded"
+      industry:
+        type: string
+        description: "Industry sector"
+
+edgeTypes:
+  worksFor:
+    label: "Works For"
+    description: "Employment relationship"
+    source: Person
+    target: Organization
+    directed: true
+    color: "#10b981"
+    properties:
+      role:
+        type: string
+        description: "Job title or role"
+      startDate:
+        type: date
+        description: "Employment start date"
+
+  knows:
+    label: "Knows"
+    description: "Personal acquaintance"
+    source: Person
+    target: Person
+    directed: false
+    color: "#f59e0b"
+    properties:
+      since:
+        type: date
+        description: "When they met"
+      relationship:
+        type: string
+        enum: ["friend", "colleague", "family", "acquaintance"]
+
+metadata:
+  author: "SemantiKit"
+  created: "2024-12-08"
+  license: "MIT"
+

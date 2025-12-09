@@ -1,0 +1,168 @@
+# Dublin Core Metadata Terms
+# Standard for resource description and discovery
+# Based on https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+
+name: "Dublin Core"
+version: "1.1"
+description: "Metadata vocabulary for describing digital and physical resources"
+namespace: "http://purl.org/dc/terms/"
+
+nodeTypes:
+  Resource:
+    label: "Resource"
+    description: "Any resource described by Dublin Core metadata"
+    color: "#3b82f6"
+    icon: "file"
+    properties:
+      title:
+        type: string
+        required: true
+        description: "A name given to the resource"
+      description:
+        type: string
+        description: "An account of the resource"
+      subject:
+        type: string
+        description: "Topic or keyword"
+      identifier:
+        type: string
+        description: "Unique identifier (ISBN, DOI, URL)"
+      language:
+        type: string
+        description: "Language of the resource"
+      format:
+        type: string
+        description: "File format or physical medium"
+      type:
+        type: string
+        description: "Nature or genre of the resource"
+        enum: ["Text", "Image", "Video", "Audio", "Dataset", "Software", "Collection"]
+      date:
+        type: date
+        description: "Date associated with the resource"
+      rights:
+        type: string
+        description: "Rights held in and over the resource"
+
+  Agent:
+    label: "Agent"
+    description: "A person, organization, or service"
+    color: "#8b5cf6"
+    icon: "users"
+    properties:
+      name:
+        type: string
+        required: true
+        description: "Name of the agent"
+      email:
+        type: email
+      url:
+        type: url
+
+  Person:
+    label: "Person"
+    description: "An individual"
+    color: "#3b82f6"
+    icon: "user"
+    extends: "Agent"
+    properties:
+      affiliation:
+        type: string
+        description: "Institutional affiliation"
+
+  Organization:
+    label: "Organization"
+    description: "A group acting as a unit"
+    color: "#14b8a6"
+    icon: "building"
+    extends: "Agent"
+    properties:
+      homepage:
+        type: url
+
+  Location:
+    label: "Location"
+    description: "A spatial region or place"
+    color: "#f59e0b"
+    icon: "map-pin"
+    properties:
+      name:
+        type: string
+        required: true
+      coordinates:
+        type: string
+        description: "Geographic coordinates"
+
+  PhysicalResource:
+    label: "Physical Resource"
+    description: "A physical object"
+    color: "#ec4899"
+    icon: "box"
+    extends: "Resource"
+    properties:
+      extent:
+        type: string
+        description: "Size or duration"
+
+edgeTypes:
+  creator:
+    label: "Creator"
+    description: "Entity responsible for making the resource"
+    source: Resource
+    target: [Person, Organization]
+    directed: true
+    color: "#3b82f6"
+
+  contributor:
+    label: "Contributor"
+    description: "Entity responsible for contributions to the resource"
+    source: Resource
+    target: [Person, Organization]
+    directed: true
+    color: "#8b5cf6"
+
+  publisher:
+    label: "Publisher"
+    description: "Entity responsible for making resource available"
+    source: Resource
+    target: [Person, Organization]
+    directed: true
+    color: "#14b8a6"
+
+  references:
+    label: "References"
+    description: "A related resource that is referenced or cited"
+    source: Resource
+    target: Resource
+    directed: true
+    color: "#f59e0b"
+
+  isPartOf:
+    label: "Is Part Of"
+    description: "A related resource in which this resource is included"
+    source: Resource
+    target: Resource
+    directed: true
+    color: "#ec4899"
+
+  hasPart:
+    label: "Has Part"
+    description: "A related resource that is included in this resource"
+    source: Resource
+    target: Resource
+    directed: true
+    color: "#ec4899"
+
+  spatial:
+    label: "Spatial Coverage"
+    description: "Spatial characteristics of the resource"
+    source: Resource
+    target: Location
+    directed: true
+    color: "#f59e0b"
+
+metadata:
+  author: "Dublin Core Metadata Initiative"
+  created: "1995"
+  license: "Creative Commons CC0"
+
