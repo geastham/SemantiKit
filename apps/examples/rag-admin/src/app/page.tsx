@@ -5,6 +5,7 @@ import { ReactFlowProvider } from 'reactflow';
 import GraphCanvas from '@/components/GraphCanvas';
 import SchemaPanel from '@/components/SchemaPanel';
 import PropertyInspector from '@/components/PropertyInspector';
+import SearchPanel from '@/components/SearchPanel';
 import Toolbar from '@/components/Toolbar';
 import { useGraphStore } from '@/lib/graph-store';
 
@@ -21,6 +22,9 @@ export default function Home() {
       <div className="flex flex-col h-screen bg-background">
         {/* Toolbar */}
         <Toolbar />
+
+        {/* Search Panel */}
+        <SearchPanel />
 
         {/* Main Content Area */}
         <div className="flex flex-1 overflow-hidden">
@@ -43,4 +47,3 @@ export default function Home() {
     </ReactFlowProvider>
   );
 }
-
