@@ -7,6 +7,7 @@ import { DocumentFilters } from '@/components/documents/DocumentFilters';
 import { DocumentUpload } from '@/components/documents/DocumentUpload';
 import { EntityList } from '@/components/entities/EntityList';
 import { EntityFilters } from '@/components/entities/EntityFilters';
+import { KnowledgeGraph } from '@/components/graph/KnowledgeGraph';
 import { 
   FileText, 
   Users, 
@@ -17,7 +18,8 @@ import {
   ChevronRight,
   Filter,
   Plus,
-  X
+  X,
+  Network
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +35,7 @@ export default function DocumentCuratorPage() {
     toggleSidebar,
   } = useDocumentStore();
 
-  const [activeTab, setActiveTab] = useState<'documents' | 'entities' | 'links'>('documents');
+  const [activeTab, setActiveTab] = useState<'documents' | 'entities' | 'graph'>('documents');
   const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
@@ -144,16 +146,16 @@ export default function DocumentCuratorPage() {
                 )}
               </button>
               <button
-                onClick={() => setActiveTab('links')}
+                onClick={() => setActiveTab('graph')}
                 className={cn(
                   'relative py-3 text-sm font-medium transition-colors',
-                  activeTab === 'links'
+                  activeTab === 'graph'
                     ? 'text-primary'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                Links
-                {activeTab === 'links' && (
+                Knowledge Graph
+                {activeTab === 'graph' && (
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                 )}
               </button>
@@ -161,16 +163,15 @@ export default function DocumentCuratorPage() {
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 overflow-auto p-6">
+          <div className={cn(
+            "flex-1 overflow-auto",
+            activeTab === 'graph' ? '' : 'p-6'
+          )}>
             {activeTab === 'documents' && <DocumentList />}
             {activeTab === 'entities' && <EntityList />}
-            {activeTab === 'links' && (
-              <div className="flex flex-col items-center justify-center h-64 text-center">
-                <LinkIcon className="h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Entity Links</h3>
-                <p className="text-sm text-muted-foreground">
-                  Link visualization coming in Phase 7
-                </p>
+            {activeTab === 'graph' && (
+              <div className="h-full">
+                <KnowledgeGraph />
               </div>
             )}
           </div>
