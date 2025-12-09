@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "node-1",
+      "type": "custom",
+      "position": { "x": 100, "y": 100 },
+      "data": {
+        "type": "Person",
+        "label": "Alice Smith",
+        "properties": {
+          "name": "Alice Smith",
+          "email": "alice@example.com",
+          "age": 30,
+          "bio": "Software engineer and open source contributor"
+        }
+      }
+    },
+    {
+      "id": "node-2",
+      "type": "custom",
+      "position": { "x": 400, "y": 100 },
+      "data": {
+        "type": "Person",
+        "label": "Bob Johnson",
+        "properties": {
+          "name": "Bob Johnson",
+          "email": "bob@example.com",
+          "age": 28
+        }
+      }
+    },
+    {
+      "id": "node-3",
+      "type": "custom",
+      "position": { "x": 250, "y": 300 },
+      "data": {
+        "type": "Organization",
+        "label": "Tech Corp",
+        "properties": {
+          "name": "Tech Corp",
+          "website": "https://techcorp.example.com",
+          "founded": "2010-01-15",
+          "industry": "Technology"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "source": "node-1",
+      "target": "node-2",
+      "type": "default",
+      "data": {
+        "type": "knows",
+        "label": "Knows",
+        "properties": {
+          "since": "2015-06-01",
+          "relationship": "friend"
+        }
+      }
+    },
+    {
+      "id": "edge-2",
+      "source": "node-1",
+      "target": "node-3",
+      "type": "default",
+      "data": {
+        "type": "worksFor",
+        "label": "Works For",
+        "properties": {
+          "role": "Senior Engineer",
+          "startDate": "2018-03-01"
+        }
+      }
+    },
+    {
+      "id": "edge-3",
+      "source": "node-2",
+      "target": "node-3",
+      "type": "default",
+      "data": {
+        "type": "worksFor",
+        "label": "Works For",
+        "properties": {
+          "role": "Product Manager",
+          "startDate": "2019-07-15"
+        }
+      }
+    }
+  ]
+}
+
