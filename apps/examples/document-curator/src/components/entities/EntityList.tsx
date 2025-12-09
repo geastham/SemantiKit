@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useDocumentStore, useFilteredEntities } from '@/lib/document-store';
 import { Entity, EntityType, ENTITY_TYPE_COLORS } from '@/types';
 import { cn } from '@/lib/utils';
-import { CheckCircle2, XCircle, Circle, Sparkles } from 'lucide-react';
+import { CheckCircle2, XCircle, Circle, Sparkles, Edit2 } from 'lucide-react';
+import { EntityEditor } from './EntityEditor';
 
 interface EntityBadgeProps {
   type: EntityType;
@@ -35,9 +37,10 @@ interface EntityCardProps {
   onSelect: () => void;
   onApprove: () => void;
   onReject: () => void;
+  onEdit: () => void;
 }
 
-function EntityCard({ entity, isSelected, onSelect, onApprove, onReject }: EntityCardProps) {
+function EntityCard({ entity, isSelected, onSelect, onApprove, onReject, onEdit }: EntityCardProps) {
   const document = useDocumentStore((state) =>
     state.documents.find((d) => d.id === entity.documentId)
   );
@@ -81,6 +84,16 @@ function EntityCard({ entity, isSelected, onSelect, onApprove, onReject }: Entit
         </div>
         
         <div className="flex flex-col gap-1">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
+            className="p-1 rounded hover:bg-blue-100 text-blue-600 transition-colors"
+            title="Edit"
+          >
+            <Edit2 className="h-4 w-4" />
+          </button>
           {entity.approved && (
             <div className="flex items-center gap-1 text-green-600">
               <CheckCircle2 className="h-4 w-4" />
@@ -130,6 +143,7 @@ export function EntityList() {
     approveEntity,
     rejectEntity,
   } = useDocumentStore();
+  const [editingEntity, setEditingEntity] = useState<Entity | null>(null);
 
   if (filteredEntities.length === 0) {
     return (
@@ -144,24 +158,33 @@ export function EntityList() {
   }
 
   return (
-    <div className="space-y-2">
-      {filteredEntities.map((entity) => (
-        <EntityCard
-          key={entity.id}
-          entity={entity}
-          isSelected={selectedEntityIds.includes(entity.id)}
-          onSelect={() => {
-            if (selectedEntityIds.includes(entity.id)) {
-              deselectEntity(entity.id);
-            } else {
-              selectEntity(entity.id);
-            }
-          }}
-          onApprove={() => approveEntity(entity.id)}
-          onReject={() => rejectEntity(entity.id)}
+    <>
+      <div className="space-y-2">
+        {filteredEntities.map((entity) => (
+          <EntityCard
+            key={entity.id}
+            entity={entity}
+            isSelected={selectedEntityIds.includes(entity.id)}
+            onSelect={() => {
+              if (selectedEntityIds.includes(entity.id)) {
+                deselectEntity(entity.id);
+              } else {
+                selectEntity(entity.id);
+              }
+            }}
+            onApprove={() => approveEntity(entity.id)}
+            onReject={() => rejectEntity(entity.id)}
+            onEdit={() => setEditingEntity(entity)}
+          />
+        ))}
+      </div>
+
+      {editingEntity && (
+        <EntityEditor
+          entity={editingEntity}
+          onClose={() => setEditingEntity(null)}
         />
-      ))}
-    </div>
+      )}
+    </>
   );
 }
-
