@@ -75,8 +75,9 @@ pnpm start
    - Sample includes People, Projects, Documents, and Concepts
 
 2. **Add Nodes**
-   - Click "Add Node" button
-   - Select node type (Person, Project, Document, Concept)
+   - Browse available node types in the left panel
+   - Click on a node type to add it to the canvas
+   - Or use the "Upload Docs" button to add documents
    - Fill in properties in the property inspector
 
 3. **Create Relationships**
@@ -88,6 +89,41 @@ pnpm start
    - Click on any node to select it
    - Edit properties in the right panel
    - Changes are saved automatically
+
+5. **Search and Filter**
+   - Use the search bar at the top to find nodes
+   - Click the filter icon to filter by node type
+   - Matching nodes are highlighted, others are dimmed
+   - Clear filters with the X button
+
+### Keyboard Shortcuts
+
+The RAG Admin UI supports several keyboard shortcuts for faster editing:
+
+| Shortcut | Action |
+|----------|--------|
+| `Delete` or `Backspace` | Delete selected node or edge |
+| `Ctrl+Z` (or `Cmd+Z` on Mac) | Undo last action |
+| `Ctrl+Y` or `Ctrl+Shift+Z` | Redo action |
+
+**Note:** Keyboard shortcuts are disabled when typing in input fields.
+
+### Document Upload
+
+Upload documents to automatically create Document nodes:
+
+1. Click "Upload Docs" in the toolbar
+2. Drag and drop files or click to browse
+3. Supported formats: PDF, DOCX, TXT, MD (max 10MB each)
+4. Files are processed and added as Document nodes with metadata
+5. Click "Done" when finished
+
+**Features:**
+- Multi-file upload
+- Drag-and-drop support
+- File validation (type and size)
+- Progress tracking
+- Automatic node creation
 
 ### Schema Management
 
@@ -335,4 +371,3 @@ For help and questions:
 ---
 
 **Built with ❤️ using SemantiKit**
-

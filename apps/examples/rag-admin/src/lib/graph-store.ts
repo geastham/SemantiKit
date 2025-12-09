@@ -2,6 +2,11 @@ import { create } from 'zustand';
 import { GraphNode, GraphEdge, Schema } from '@/types';
 import { addEdge, applyNodeChanges, applyEdgeChanges, NodeChange, EdgeChange } from 'reactflow';
 
+interface HistoryState {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}
+
 interface GraphStore {
   // State
   nodes: GraphNode[];
@@ -9,6 +14,10 @@ interface GraphStore {
   schema: Schema;
   selectedNodeId: string | null;
   selectedEdgeId: string | null;
+  
+  // History state
+  past: HistoryState[];
+  future: HistoryState[];
   
   // Actions
   setNodes: (nodes: GraphNode[]) => void;
@@ -34,6 +43,12 @@ interface GraphStore {
   
   clearGraph: () => void;
   loadSampleData: () => void;
+  
+  // History actions
+  undo: () => void;
+  redo: () => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
 }
 
 const defaultSchema: Schema = {
@@ -115,6 +130,21 @@ const defaultSchema: Schema = {
   },
 };
 
+const MAX_HISTORY_SIZE = 50;
+
+// Helper function to save current state to history
+const saveToHistory = (get: () => GraphStore, set: (state: Partial<GraphStore>) => void) => {
+  const { nodes, edges, past } = get();
+  const newPast = [...past, { nodes, edges }];
+  
+  // Limit history size
+  if (newPast.length > MAX_HISTORY_SIZE) {
+    newPast.shift();
+  }
+  
+  set({ past: newPast, future: [] });
+};
+
 export const useGraphStore = create<GraphStore>((set, get) => ({
   // Initial state
   nodes: [],
@@ -122,6 +152,8 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   schema: defaultSchema,
   selectedNodeId: null,
   selectedEdgeId: null,
+  past: [],
+  future: [],
 
   // Setters
   setNodes: (nodes) => set({ nodes }),
@@ -148,6 +180,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
 
   // Node operations
   addNode: (node) => {
+    saveToHistory(get, set);
     const id = `node-${Date.now()}`;
     const newNode: GraphNode = {
       ...node,
@@ -162,6 +195,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   },
 
   updateNode: (id, data) => {
+    saveToHistory(get, set);
     set({
       nodes: get().nodes.map((node) =>
         node.id === id
@@ -172,6 +206,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   },
 
   deleteNode: (id) => {
+    saveToHistory(get, set);
     set({
       nodes: get().nodes.filter((node) => node.id !== id),
       edges: get().edges.filter((edge) => edge.source !== id && edge.target !== id),
@@ -181,6 +216,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
 
   // Edge operations
   addEdge: (edge) => {
+    saveToHistory(get, set);
     const id = `edge-${Date.now()}`;
     const newEdge: GraphEdge = {
       ...edge,
@@ -192,6 +228,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   },
 
   updateEdge: (id, data) => {
+    saveToHistory(get, set);
     set({
       edges: get().edges.map((edge) =>
         edge.id === id
@@ -202,6 +239,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   },
 
   deleteEdge: (id) => {
+    saveToHistory(get, set);
     set({
       edges: get().edges.filter((edge) => edge.id !== id),
       selectedEdgeId: get().selectedEdgeId === id ? null : get().selectedEdgeId,
@@ -385,5 +423,38 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
       edges: sampleEdges,
     });
   },
-}));
 
+  // History actions
+  undo: () => {
+    const { past, nodes, edges } = get();
+    if (past.length === 0) return;
+
+    const previous = past[past.length - 1];
+    const newPast = past.slice(0, past.length - 1);
+
+    set({
+      past: newPast,
+      future: [{ nodes, edges }, ...get().future],
+      nodes: previous.nodes,
+      edges: previous.edges,
+    });
+  },
+
+  redo: () => {
+    const { future, nodes, edges } = get();
+    if (future.length === 0) return;
+
+    const next = future[0];
+    const newFuture = future.slice(1);
+
+    set({
+      past: [...get().past, { nodes, edges }],
+      future: newFuture,
+      nodes: next.nodes,
+      edges: next.edges,
+    });
+  },
+
+  canUndo: () => get().past.length > 0,
+  canRedo: () => get().future.length > 0,
+}));

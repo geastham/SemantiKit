@@ -1,13 +1,21 @@
 'use client';
 
-import { Plus, Upload, Download, Trash2, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Upload, Download, Trash2, RefreshCw, Undo2, Redo2, FileUp } from 'lucide-react';
 import { useGraphStore } from '@/lib/graph-store';
+import DocumentUpload from './DocumentUpload';
 
 export default function Toolbar() {
+  const [showUpload, setShowUpload] = useState(false);
+  
   const clearGraph = useGraphStore((state) => state.clearGraph);
   const loadSampleData = useGraphStore((state) => state.loadSampleData);
   const nodes = useGraphStore((state) => state.nodes);
   const edges = useGraphStore((state) => state.edges);
+  const undo = useGraphStore((state) => state.undo);
+  const redo = useGraphStore((state) => state.redo);
+  const canUndo = useGraphStore((state) => state.canUndo());
+  const canRedo = useGraphStore((state) => state.canRedo());
 
   const handleExport = () => {
     const data = {
@@ -55,21 +63,52 @@ export default function Toolbar() {
   };
 
   return (
-    <header className="h-14 border-b border-border bg-card flex items-center justify-between px-4">
-      <div className="flex items-center gap-2">
-        <h1 className="text-lg font-semibold">RAG Admin UI</h1>
-        <span className="text-xs text-muted-foreground">
-          SemantiKit Example
-        </span>
-      </div>
+    <>
+      <header className="h-14 border-b border-border bg-card flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-semibold">RAG Admin UI</h1>
+          <span className="text-xs text-muted-foreground">
+            SemantiKit Example
+          </span>
+        </div>
 
-      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
+        <button
+          onClick={undo}
+          disabled={!canUndo}
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded hover:bg-secondary/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Undo (Ctrl+Z)"
+        >
+          <Undo2 size={14} />
+          Undo
+        </button>
+
+        <button
+          onClick={redo}
+          disabled={!canRedo}
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded hover:bg-secondary/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Redo (Ctrl+Y)"
+        >
+          <Redo2 size={14} />
+          Redo
+        </button>
+
+        <div className="w-px h-6 bg-border mx-1" />
+
         <button
           onClick={loadSampleData}
           className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded hover:bg-secondary/80 transition"
         >
           <RefreshCw size={14} />
           Load Sample
+        </button>
+
+        <button
+          onClick={() => setShowUpload(true)}
+          className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded hover:bg-secondary/80 transition"
+        >
+          <FileUp size={14} />
+          Upload Docs
         </button>
 
         <button
@@ -99,8 +138,11 @@ export default function Toolbar() {
           <Trash2 size={14} />
           Clear
         </button>
-      </div>
-    </header>
+        </div>
+      </header>
+
+      {/* Document Upload Modal */}
+      {showUpload && <DocumentUpload onClose={() => setShowUpload(false)} />}
+    </>
   );
 }
-

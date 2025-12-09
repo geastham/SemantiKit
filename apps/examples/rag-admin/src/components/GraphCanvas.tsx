@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -29,6 +29,12 @@ export default function GraphCanvas() {
   const onConnect = useGraphStore((state) => state.onConnect);
   const setSelectedNode = useGraphStore((state) => state.setSelectedNode);
   const setSelectedEdge = useGraphStore((state) => state.setSelectedEdge);
+  const deleteNode = useGraphStore((state) => state.deleteNode);
+  const deleteEdge = useGraphStore((state) => state.deleteEdge);
+  const selectedNodeId = useGraphStore((state) => state.selectedNodeId);
+  const selectedEdgeId = useGraphStore((state) => state.selectedEdgeId);
+  const undo = useGraphStore((state) => state.undo);
+  const redo = useGraphStore((state) => state.redo);
 
   const handleNodeClick = useCallback(
     (_: React.MouseEvent, node: Node) => {
@@ -48,6 +54,51 @@ export default function GraphCanvas() {
     setSelectedNode(null);
     setSelectedEdge(null);
   }, [setSelectedNode, setSelectedEdge]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Ignore shortcuts when typing in input fields
+      const target = event.target as HTMLElement;
+      if (
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      // Undo: Ctrl+Z (or Cmd+Z on Mac)
+      if ((event.ctrlKey || event.metaKey) && event.key === 'z' && !event.shiftKey) {
+        event.preventDefault();
+        undo();
+        return;
+      }
+
+      // Redo: Ctrl+Y or Ctrl+Shift+Z (or Cmd+Y / Cmd+Shift+Z on Mac)
+      if (
+        ((event.ctrlKey || event.metaKey) && event.key === 'y') ||
+        ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'z')
+      ) {
+        event.preventDefault();
+        redo();
+        return;
+      }
+
+      // Delete key - remove selected node or edge
+      if (event.key === 'Delete' || event.key === 'Backspace') {
+        event.preventDefault();
+        if (selectedNodeId) {
+          deleteNode(selectedNodeId);
+        } else if (selectedEdgeId) {
+          deleteEdge(selectedEdgeId);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedNodeId, selectedEdgeId, deleteNode, deleteEdge, undo, redo]);
 
   const handleFitView = useCallback(() => {
     fitView({ padding: 0.2, duration: 300 });
@@ -99,4 +150,3 @@ export default function GraphCanvas() {
     </ReactFlow>
   );
 }
-
