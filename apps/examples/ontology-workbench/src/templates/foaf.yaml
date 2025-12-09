@@ -1,0 +1,155 @@
+# FOAF (Friend of a Friend) Ontology
+# A well-known ontology for describing people and their relationships
+# Based on http://xmlns.com/foaf/spec/
+
+name: "FOAF Ontology"
+version: "0.1"
+description: "Friend of a Friend - describing people and their social networks"
+namespace: "http://xmlns.com/foaf/0.1/"
+
+nodeTypes:
+  Person:
+    label: "Person"
+    description: "An individual person"
+    color: "#3b82f6"
+    icon: "user"
+    properties:
+      name:
+        type: string
+        required: true
+        description: "Full name"
+      givenName:
+        type: string
+        description: "First name"
+      familyName:
+        type: string
+        description: "Last name"
+      nickname:
+        type: string
+        description: "Nickname or handle"
+      mbox:
+        type: email
+        description: "Email address (mailbox)"
+      homepage:
+        type: url
+        description: "Personal homepage URL"
+      phone:
+        type: string
+        description: "Phone number"
+      birthday:
+        type: date
+        description: "Date of birth"
+      gender:
+        type: string
+        enum: ["male", "female", "other"]
+      title:
+        type: string
+        description: "Professional or honorific title"
+
+  Agent:
+    label: "Agent"
+    description: "Any entity that can act (person, organization, software)"
+    color: "#6366f1"
+    icon: "robot"
+    abstract: true
+    properties:
+      name:
+        type: string
+        required: true
+      mbox:
+        type: email
+
+  Organization:
+    label: "Organization"
+    description: "An organized group of people"
+    color: "#8b5cf6"
+    icon: "building"
+    extends: "Agent"
+    properties:
+      homepage:
+        type: url
+      phone:
+        type: string
+
+  Document:
+    label: "Document"
+    description: "A document or publication"
+    color: "#ec4899"
+    icon: "file-text"
+    properties:
+      title:
+        type: string
+        required: true
+      description:
+        type: string
+      primaryTopic:
+        type: string
+
+  Project:
+    label: "Project"
+    description: "A collaborative endeavor"
+    color: "#14b8a6"
+    icon: "briefcase"
+    properties:
+      name:
+        type: string
+        required: true
+      homepage:
+        type: url
+      description:
+        type: string
+
+edgeTypes:
+  knows:
+    label: "Knows"
+    description: "Indicates that two people know each other"
+    source: Person
+    target: Person
+    directed: false
+    color: "#10b981"
+
+  friend:
+    label: "Friend"
+    description: "A stronger relationship than knows"
+    source: Person
+    target: Person
+    directed: false
+    color: "#f59e0b"
+
+  member:
+    label: "Member"
+    description: "Membership in an organization or group"
+    source: Person
+    target: [Organization, Project]
+    directed: true
+    color: "#8b5cf6"
+
+  made:
+    label: "Made"
+    description: "Something that a person created"
+    source: Person
+    target: [Document, Project]
+    directed: true
+    color: "#ec4899"
+
+  workplaceHomepage:
+    label: "Works At"
+    description: "Link to organization where person works"
+    source: Person
+    target: Organization
+    directed: true
+    color: "#06b6d4"
+
+  based_near:
+    label: "Based Near"
+    description: "Geographic proximity"
+    source: Person
+    target: Person
+    directed: false
+    color: "#84cc16"
+
+metadata:
+  author: "Dan Brickley & Libby Miller"
+  created: "2000"
+  license: "Creative Commons Attribution License"
+
