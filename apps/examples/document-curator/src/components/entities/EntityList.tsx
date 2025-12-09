@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useDocumentStore, useFilteredEntities } from '@/lib/document-store';
 import { Entity, EntityType, ENTITY_TYPE_COLORS } from '@/types';
 import { cn } from '@/lib/utils';
-import { CheckCircle2, XCircle, Circle, Sparkles, Edit2 } from 'lucide-react';
+import { CheckCircle2, XCircle, Circle, Sparkles, Edit2, Link2 } from 'lucide-react';
 import { EntityEditor } from './EntityEditor';
+import { EntityLinker } from './EntityLinker';
 
 interface EntityBadgeProps {
   type: EntityType;
@@ -38,9 +39,10 @@ interface EntityCardProps {
   onApprove: () => void;
   onReject: () => void;
   onEdit: () => void;
+  onLink: () => void;
 }
 
-function EntityCard({ entity, isSelected, onSelect, onApprove, onReject, onEdit }: EntityCardProps) {
+function EntityCard({ entity, isSelected, onSelect, onApprove, onReject, onEdit, onLink }: EntityCardProps) {
   const document = useDocumentStore((state) =>
     state.documents.find((d) => d.id === entity.documentId)
   );
@@ -84,6 +86,16 @@ function EntityCard({ entity, isSelected, onSelect, onApprove, onReject, onEdit 
         </div>
         
         <div className="flex flex-col gap-1">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onLink();
+            }}
+            className="p-1 rounded hover:bg-purple-100 text-purple-600 transition-colors"
+            title="Link to other entities"
+          >
+            <Link2 className="h-4 w-4" />
+          </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -144,6 +156,7 @@ export function EntityList() {
     rejectEntity,
   } = useDocumentStore();
   const [editingEntity, setEditingEntity] = useState<Entity | null>(null);
+  const [linkingEntity, setLinkingEntity] = useState<Entity | null>(null);
 
   if (filteredEntities.length === 0) {
     return (
@@ -175,6 +188,7 @@ export function EntityList() {
             onApprove={() => approveEntity(entity.id)}
             onReject={() => rejectEntity(entity.id)}
             onEdit={() => setEditingEntity(entity)}
+            onLink={() => setLinkingEntity(entity)}
           />
         ))}
       </div>
@@ -183,6 +197,13 @@ export function EntityList() {
         <EntityEditor
           entity={editingEntity}
           onClose={() => setEditingEntity(null)}
+        />
+      )}
+
+      {linkingEntity && (
+        <EntityLinker
+          entity={linkingEntity}
+          onClose={() => setLinkingEntity(null)}
         />
       )}
     </>
