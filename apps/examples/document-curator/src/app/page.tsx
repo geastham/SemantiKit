@@ -8,6 +8,7 @@ import { DocumentUpload } from '@/components/documents/DocumentUpload';
 import { EntityList } from '@/components/entities/EntityList';
 import { EntityFilters } from '@/components/entities/EntityFilters';
 import { KnowledgeGraph } from '@/components/graph/KnowledgeGraph';
+import { ExportDialog } from '@/components/export/ExportDialog';
 import { 
   FileText, 
   Users, 
@@ -19,7 +20,8 @@ import {
   Filter,
   Plus,
   X,
-  Network
+  Network,
+  Download
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -37,6 +39,7 @@ export default function DocumentCuratorPage() {
 
   const [activeTab, setActiveTab] = useState<'documents' | 'entities' | 'graph'>('documents');
   const [showUpload, setShowUpload] = useState(false);
+  const [showExport, setShowExport] = useState(false);
 
   useEffect(() => {
     // Load sample data if store is empty
@@ -100,13 +103,22 @@ export default function DocumentCuratorPage() {
               </button>
             </div>
 
-            <button
-              onClick={() => setShowUpload(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-            >
-              <Plus className="h-4 w-4" />
-              Upload Document
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowExport(true)}
+                className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium hover:bg-muted transition-colors"
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </button>
+              <button
+                onClick={() => setShowUpload(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                Upload Document
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -274,6 +286,9 @@ export default function DocumentCuratorPage() {
           </div>
         </div>
       )}
+
+      {/* Export Dialog */}
+      {showExport && <ExportDialog onClose={() => setShowExport(false)} />}
     </div>
   );
 }
