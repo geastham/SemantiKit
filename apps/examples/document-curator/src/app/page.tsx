@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useDocumentStore } from '@/lib/document-store';
 import { DocumentList } from '@/components/documents/DocumentList';
 import { DocumentFilters } from '@/components/documents/DocumentFilters';
+import { DocumentUpload } from '@/components/documents/DocumentUpload';
 import { EntityList } from '@/components/entities/EntityList';
 import { EntityFilters } from '@/components/entities/EntityFilters';
 import { 
@@ -14,7 +15,9 @@ import {
   List,
   ChevronLeft,
   ChevronRight,
-  Filter
+  Filter,
+  Plus,
+  X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -31,6 +34,7 @@ export default function DocumentCuratorPage() {
   } = useDocumentStore();
 
   const [activeTab, setActiveTab] = useState<'documents' | 'entities' | 'links'>('documents');
+  const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
     // Load sample data if store is empty
@@ -93,6 +97,14 @@ export default function DocumentCuratorPage() {
                 <List className="h-4 w-4" />
               </button>
             </div>
+
+            <button
+              onClick={() => setShowUpload(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            >
+              <Plus className="h-4 w-4" />
+              Upload Document
+            </button>
           </div>
         </div>
       </header>
@@ -243,6 +255,24 @@ export default function DocumentCuratorPage() {
           </button>
         )}
       </div>
+
+      {/* Upload Modal */}
+      {showUpload && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background rounded-lg max-w-lg w-full p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Upload Document</h2>
+              <button
+                onClick={() => setShowUpload(false)}
+                className="p-1 hover:bg-muted rounded transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <DocumentUpload />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
